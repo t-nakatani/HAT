@@ -688,7 +688,7 @@ class Upsample(nn.Sequential):
     """Upsample module.
 
     Args:
-        scale (int): Scale factor. Supported scales: 2^n and 3.
+        scale (int): Scale factor. Supported scales: 2^n and 3,5.
         num_feat (int): Channel number of intermediate features.
     """
 
@@ -701,8 +701,11 @@ class Upsample(nn.Sequential):
         elif scale == 3:
             m.append(nn.Conv2d(num_feat, 9 * num_feat, 3, 1, 1))
             m.append(nn.PixelShuffle(3))
+        elif scale == 5:
+            m.append(nn.Conv2d(num_feat, 25 * num_feat, 3, 1, 1))
+            m.append(nn.PixelShuffle(5))
         else:
-            raise ValueError(f'scale {scale} is not supported. ' 'Supported scales: 2^n and 3.')
+            raise ValueError(f'scale {scale} is not supported. ' 'Supported scales: 2^n and 3,5.')
         super(Upsample, self).__init__(*m)
 
 
